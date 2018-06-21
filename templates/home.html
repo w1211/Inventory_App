@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% from 'macro.html' import main_menu %}
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<link rel="stylesheet" href='/static/main_style.css' type="text/css">
+<head>
+    <meta charset="UTF-8">
+    <title>Mbarara BioMed </title>
+</head>
+<body>
+    <div class="main_content">
+        {{ main_menu() }}
+        <div class="content">
+            <h1>Open Work</h1>
+            {% if open_work  and open_work.count() > 0%}
+                <table id="open_work">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h3>Equipment Serial</h3>
+                            </td>
+                            <td>
+                                <h3>Open Date</h3>
+                            </td>
+                            <td>
+                                <h3>Problem Type</h3>
+                            </td>
+                            <td>
+                                <h3>Problems</h3>
+                            </td>
+                             <td>
+                                <h3>Comments</h3>
+                            </td>
+                        {% for work in open_work %}
+                                </tr>
+                                    <tr>
+                                        <td>
+                                            <p>{{ work.equipment_serial }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{{ work.open_date }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{{ work.problem_type }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{{ work.problems }}</p>
+                                        </td>
+                                        <td>
+                                             <p>{{ work.comments_solutions }}</p>
+                                        </td>
+                                        <td>
+                                            <a href="update_work_item/{{work.equipment_serial}}">
+                                                <button type="submit" name="see_more" value="{{work.equipment_serial}}">Go</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                        {% endfor %}
+                    </tbody>
+                 </table>
+            {% else  %}
+            <p>There's currently no open work! You can create a new work item using the "New work" button</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+{% from 'macro.html' import main_menu %}
+<html lang="en">
+<head>
+    <link type="text/javascript" src="{{ url_for('static',filename='jquery.js') }}">
+    <script type="text/javascript" src="{{ url_for('static',filename='jquery.js') }}"></script>
+    <script type="text/javascript">
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
+    </script>
+    <link rel="stylesheet" href="/static/main_style.css" type="text/css">
+    <meta charset="UTF-8">
+    <title>New Device</title>
+
+    <script language="javascript" type="text/javascript">
+        function change_locs(locs){
+            var sel = document.getElementById("Location");
+            for(var i = sel.options.length - 1 ; i >= 0; i--){
+                sel.remove(i);
+            }
+            for(var i = locs.length() - 1; i >= 0; i--){
+                sel.options.add(locs[i]);
+            }
+
+        }
+
+        function update_locations(elem){
+            $(document).ready(function () {
+                $.getJSON($SCRIPT_ROOT + 'update_locations', {
+                    dep_id: $(elem).val()
+                }, function(locs) {
+                    var sel = document.getElementById("Location");
+                    for(var i = sel.options.length - 1 ; i >= 0; i--){
+                        sel.remove(i);
+                    }
+                    var str = ""
+                    for(var i = locs.length - 1; i >= 0; i--){
+                       str += '<option value="'+locs[i][0]+'">'+locs[i][1]+'</option>'
+                    }
+                    $('#Location').append(str)
+
+
+                });
+            })
+        };
+    </script>
+
+</head>
+<body>
+    <div class="main_content">
+        {{ main_menu() }}
+        <div class="content">
+            <p><a href="new_work">Go Back</a></p>
+            <h1>New Device</h1>
+            <p>Enter the serial number to make sure the device is not registered yet, then fill out the other fields</p>
+            <form method="POST" >
+                <div class="Text_UserIn">
+                    <p>Serial Number</p>
+                    <input type="text" name="Serial"
+                            {% if  serial_verified %}
+                                disabled="disabled"
+
+                            {# TODO set bakground to be grayed out #}
+                            {%  endif %}
+                            {% if serial_query %} value="{{ serial_query }}" {% endif %}
+                    >
+                    {% if  serial_verified  and serial_query%}
+                          <input type="hidden" name="Serial" value="{{ serial_query }}">
+                        {% if not item %}
+                         <p style="color: green">Serial Verified: not already in database</p>
+                        {% endif %}
+                    {% endif %}
+                    {% if not serial_verified %}
+                    <button type="submit" name="verify_serial" value="verify_serial">Check</button>
+                    <button type="submit" name="generate_serial" value="generate_serial">Generate a serial</button>
+                        {% if serial_query %}
+                            <p style="color: red">A piece of equipment with that serial has already been registered</p>
+                        {% endif %}
+                    {% endif  %}
+                    {% if not serial_verified %}
+                        <p>If the equipment does not have a serial, then the system can generate one for you</p>
+                    {% endif %}
+                    {% if serial_generated %}
+                        <p style="color: green;" >Please mark this serial down on the device</p>
+                        <input type="hidden" name="serial_generated" value="1">
+                    {% endif %}
+                </div>
+                <fieldset  style="border: hidden;padding: 0px" {% if  not serial_verified %} disabled {%  endif %}>
+                <div class="Text_UserIn">
+                    <p>Model</p>    <input type="text"
+                                           name="Model"
+                                           {% if item %}
+                                            value="{{ item.model_number }}"
+                                           {% endif %}
+                >
+                </div>
+                <div class="Text_UserIn">
+                    <p>Manufacturer</p> <input type="text"
+                                               name="Manufacturer"
+                                               {% if item %}
+                                                value="{{ item.manufacturer }}"
+                                               {% endif %}
+                >
+                </div>
+                <div class="Text_UserIn">
+                    <p>Equipment Type</p>
+                    <select name="Equipment">
+                        {% for type in types %}
+                            <option value="{{ type }}"
+                                    {% if item and (item.equipment_type == type) %}
+                                            selected="selected"
+                                           {% endif %}
+                            >{{ type }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="Text_UserIn">
+                    <p>Department</p>
+                        {% if departments  %}
+                        <select name="Department" id="Department" onchange="update_locations(this)">
+                            <option disabled selected>Choose a department</option>
+                            {% for dep in departments %}
+                                <option value="{{ dep.get_id() }}"
+                                        {% if item and (item.department == dep.get_id()) %}
+                                            selected="selected"
+                                           {% endif %}
+                                >{{ dep.get_name() }}</option>
+                            {% endfor %}
+                        </select>
+                        {% elif serial_verified %}
+                            <p>Please go to the department manager in the menu to create some departments first</p>
+                        {% endif %}
+                </div>
+                 <div class="Text_UserIn">
+                    <p>Location</p>
+                        <select name="Location" id="Location">
+                            <option disabled selected>Choose a location</option>
+                            {% if locations %}
+                            {% for loc in locations %}
+                                <option value="{{ loc.get_id() }}"
+                                        {% if item and (item.location == loc.get_id()) %}
+                                            selected="selected"
+                                           {% endif %}
+                                >{{ loc.get_name() }}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                     </select>
+                </div>
+                <div class="Text_UserIn">
+                    <p>Condition</p>
+                    <select name="Condition">
+                        {% for key,value in condtions.items()  %}
+                            <option value="{{ key }}"
+                                {% if item and (item.condition == key) %}
+                                    selected="selected"
+                                 {% endif %}
+                            >{{ key }}: {{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="Text_UserIn">
+                    <p>Has user manual?</p>  <input type="radio"
+                                                    name="User_manual"
+                                                     {% if item and (item.has_user_manual == 1) %}
+                                                        checked="checked"
+                                                     {% endif %}
+                                                    value="1">Yes
+                                            <input type="radio"
+                                                   name="User_manual"
+                                                   value="0"
+                                                    {% if item and (item.has_user_manual == 0) %}
+                                                        checked="checked"
+                                                    {% endif %}>No
+                                            <input type="radio"
+                                                   name="User_manual"
+                                                   value="2"
+                                                   {% if item and (item.has_user_manual == 2) %}
+                                                        checked="checked"
+                                                     {% endif %}
+                                            >Unsure
+                </div>
+                <div class="Text_UserIn">
+                 <p>Has service manual?</p>   <input type="radio"
+                                                     {% if item and (item.has_service_manual == 1) %}
+                                                        checked="checked"
+                                                     {% endif %}
+                                                     name="Service_manual"
+                                                     value="1" >Yes
+                                                <input type="radio"
+                                                       {% if item and (item.has_service_manual == 0) %}
+                                                        checked="checked"
+                                                       {% endif %}
+                                                       name="Service_manual" value="0">No
+                                                <input type="radio"
+                                                       {% if item and (item.has_service_manual == 2) %}
+                                                        checked="checked"
+                                                     {% endif %}
+                                                       name="Service_manual" value="2"
+                                                >Unsure
+                </div>
+                <button type="submit" name="Submit", value="Submit">Save and Continue</button>
+                {% if item %}
+                    <input type="hidden" name="is_update">
+                {% endif %}
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

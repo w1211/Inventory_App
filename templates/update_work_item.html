@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/static/main_style.css" type="text/css">
+{% from 'macro.html' import equip_probs, mod_problems %}
+<head>
+    <meta charset="UTF-8">
+    <title>New work</title>
+
+    <script language="JavaScript">
+      function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+          console.log(charCode)
+         if ( (charCode < 31 || (charCode >= 48 && charCode <= 57)) ||
+             190 === charCode || charCode === 8 || charCode === 46
+         )
+            return true;
+
+         return false;
+      }
+
+      function validate(){
+          var error = [];
+          if (document.getElementById("engineer").value == "Choose an engineer") {
+              error.push("Engineer cannot be empty ")
+          }
+
+          if (document.getElementById("date_input").value == "") {
+              error.push("Date cannot be empty");
+          }
+
+{#          var today = new Date();#}
+{#          today.setHours(0,0,0,0);#}
+{##}
+{#          var selected  = Date.parse((document.getElementById("date_input").value).replace(/-/g, '\/').replace(/T.+/, ''));#}
+{#          if (selected > today){#}
+{#              error.push("Date reported cannoted be in the future");#}
+{#          }#}
+
+          if (document.getElementById("problem").value == "") {
+              error.push("Problem description cannot be empty");
+          }
+
+          if (error.length > 0) {
+              var final_message =  "Please fix the following problems:";
+              for(var i = 0; i <= error.length - 1;  i++){
+                  final_message += "\n - " + error[i];
+              }
+              alert(final_message);
+              return false
+          } else {
+              return true
+          }
+      }
+
+    </script>
+
+</head>
+<body>
+    <div class="main_content" id="update_work_content">
+        {% if sn_not_found %}
+            <div>
+                <h3>Oops, there isnt an item with that serial number</h3>
+                <p>You can either <a href="../new_work">go back</a> and try entering it again, or
+                <a href="new_device.html">log a new device</a> in the system </p>
+            </div>
+        {% else %}
+        <form method="POST" >
+            <div class="work_form">
+                <h3>Work on {{ item.serial_number }}</h3>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h5>Serial</h5>
+                            </td>
+                            <td>
+                                <h5>Model</h5>
+                            </td>
+                            <td>
+                                <h5>Manufacturer</h5>
+                            </td>
+                             <td>
+                                <h5>Equipment Type</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>{{ item.serial_number }}</p>
+                            </td>
+                            <td>
+                                <p>{{ item.model_number }}</p>
+                            </td>
+                            <td>
+                                <p>{{ item.manufacturer }}</p>
+                            </td>
+                            <td>
+                                <p>{{ item.equipment_type }}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                    <div class="Text_UserIn">
+                        <p>Engineer</p>
+                         <select name="engineer_id" id="engineer">
+                            <option {% if not job %}selected="selected" {% endif %}disabled="disabled">Choose an engineer</option>
+                         {% for engo in engineers %}
+                             <option value="{{ engo.get_id() }}"
+                                  {% if job and job.engineer_id == engo.get_id() %}
+                                     selected="selected"
+                                  {% endif %}
+                             >{{ engo.get_name() }}</option>
+                         {% endfor %}
+                        </select>
+                    </div>
+                    <div class="Text_UserIn">
+                        <p>Date equipment reported broken *</p>
+                        <input type="date" name="open_date" id="date_input" {% if job %} value="{{ job.open_date.date() }}" {% endif %}>
+                    </div>
+                    <div class="Text_UserIn">
+                        <p>Problems *</p>    <textarea id="problem"
+                                                    type="text"
+                                                    name="problems"
+                                                    placeholder="List problems found here"
+                                                    {% if job %}
+                                                        value="{{ job.problems }}"
+                                                    {% endif %}>{{ job.problems }}</textarea>
+
+                    </div>
+                    <div class="Text_UserIn">
+                        <p>Work log or solution</p>
+                        <textarea id="long_form"
+                                  type="text"
+                                  name="comments_solutions"
+                                  placeholder="List any comments or fixes here"
+                                  style="text-align: left"
+                                  {% if job %} value="{{ job.comments_solutions }}" {% endif %}>{{ job.comments_solutions }}</textarea>
+                    </div>
+                    <div class="Text_UserIn">
+                        <p>Preventative work done</p>
+                        <textarea id="long_form"
+                                  type="text"
+                                  name="preventative_work"
+                                  style="text-align: left"
+                                  placeholder="List any preventative work here"
+                                  {% if job %} value="{{ job.preventative_work }}" {% endif %}>{{ job.preventative_work }}</textarea>
+                    </div>
+                    <div class="Table_UserIn">
+                        <p>Purchases</p>
+                        <table style="width: 80%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Count
+                                    </td>
+                                    <td style="width:90%">
+                                        Item
+                                    </td>
+                                    <td style="width: 50px;">
+                                         Cost (UGX)
+                                    </td>
+                                </tr>
+                                {% for i in range(num_purchases) %}
+                                    <tr>
+                                        <td>
+                                            {% if purchases and i < purchases|length  %}
+                                                        <input type="hidden" name="p_id_{{ i }}" value="{{ purchases[i].id }}">
+                                            {% endif %}
+                                            {{ i + 1 }}
+                                        </td>
+                                        <td style="width:70%">
+                                            <input type="text"
+                                                   style="width: 100%"
+                                                   name="purchase_{{ i }}"
+                                                   {% if purchases and purchases|length > i  %}
+                                                        value="{{ purchases[i].get_item() }}"
+                                                    {% endif %}
+                                            >
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                   name="cost_{{ i }}"
+                                                   onkeypress="return isNumberKey(event)"
+                                                   {% if purchases and purchases|length > i  %}
+                                                        value="{{ purchases[i].get_cost() }}"
+                                                    {% endif %}
+                                            >
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="Text_UserIn">
+                        <p>Problem type</p>
+                         <select name="problem_type" type>
+                         {% for type in problem_type %}
+                             <option value="{{ type }}"
+                                  {% if job and job.problem_type == type %}
+                                     selected="selected"
+                                  {% endif %}
+                             >{{ type }}</option>
+                         {% endfor %}
+                        </select>
+                    </div>
+                    <div class="Text_UserIn">
+                        <p>Job type</p>
+                         <select name="job_type" type>
+                         {% for type in job_types %}
+                             <option value="{{ type }}"
+                                  {% if job and job.job_type == type %}
+                                     selected="selected"
+                                  {% endif %}
+                             >{{ type }}</option>
+                         {% endfor %}
+                        </select>
+                    </div>
+                    <div class="Text_UserIn">
+                        <p>Job urgency</p>
+                         <select name="job_urgency" type>
+                         {% for rank,type in job_urgency.items() %}
+                             <option value="{{ rank }}"
+                                  {% if job and job.urgency == rank %}
+                                     selected="selected"
+                                  {% endif %}
+                             >{{ rank }}: {{ type }}</option>
+                         {% endfor %}
+                        </select>
+                    </div>
+                    <div class="Text_UserIn">
+                        <p>Equipment Condition</p>
+                        <select name="condition">
+                            {% for key,cond in conditions.items() %}
+                            <option value="{{ key }}"
+                                    {% if key == item.condition  %}
+                                    selected="selected"
+                                    {%  endif %}
+                            >{{ key }}: {{ cond }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+                    {% if job %}
+                        <input type="hidden" name="job_id" value="{{ job.job_id }}">
+                    {% endif %}
+            </div>
+
+            <div class="work_other">
+                {{ equip_probs(equipment_problems, job) }}
+                {{ mod_problems(model_problems, job, item) }}
+                <div id="save_buttons_work">
+                    <button class="work_form_bt"
+                            id="submit_bt"
+                            type="submit"
+                            name="submit"
+                            onclick="return validate()"
+                            value="submit_incomplete">
+                        Save (still working on item)
+                    </button>
+                    <button class="work_form_bt"
+                            id="submit_bt"
+                            type="submit"
+                            name="submit"
+                            onclick="return validate()"
+                            value="submit_complete">
+                        Save and submit (item fixed)
+                    </button>
+                    <button class="work_form_bt"
+                            id="cancel_bt"
+                            type="submit"
+                            name="cancel"
+                            value="cancel">
+                        Cancel (don't save changes)
+                    </button>
+                    {% if job %}
+                        <input type="hidden" name="job_id" value="{{ job.job_id }}">
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+        {% endif %}
+    </div>
+</body>
+</html>

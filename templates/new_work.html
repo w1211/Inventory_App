@@ -1,0 +1,78 @@
+{% from 'macro.html' import main_menu %}
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/static/main_style.css" type="text/css">
+<head>
+    <meta charset="UTF-8">
+    <title>New Work</title>
+</head>
+    <div class="main_content">
+        {{ main_menu() }}
+        <div class="content">
+            <h1>Find device</h1>
+            <form method = "POST">
+                <p>Search for a Serial Number:</p><input type="text" name="serial_number_search" value="{{ query }}">
+                <button type="submit" name="search" value="search">Search</button>
+                {% if error_message %}
+                    <p style="color:red">{{ error_message }}</p>
+                {% endif %}
+                <div>
+                    <p>Or <a href="new_device">enter a new device</a></p>
+                </div>
+                {% if result %}
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h3>Serial</h3>
+                                </td>
+                                <td>
+                                    <h3>Model</h3>
+                                </td>
+                                <td>
+                                    <h3>Manufacturer</h3>
+                                </td>
+                                 <td>
+                                    <h3>Equipment Type</h3>
+                                </td>
+                                <td>
+                                    <h3>Department</h3>
+                                </td>
+                                <td>
+                                    <h3>Location</h3>
+                                </td>
+                                <td>
+                                    <h3>Start Work?</h3>
+                                </td>
+                            </tr>
+                                <tr>
+                                    <td>
+                                        <p>{{ result.serial_number }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ result.model_number }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ result.manufacturer }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ result.equipment_type }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ data_man.get_department_name(result.department) }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ data_man.get_location_name(result.location) }}</p>
+                                    </td>
+                                    <td>
+                                        <button type='submit' name="serial_submit" value="{{ result.serial_number }}">Start Work</button>
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</body>
+</html>

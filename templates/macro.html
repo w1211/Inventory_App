@@ -1,0 +1,96 @@
+{% macro main_menu() %}
+    <div class="main_menu">
+        <img src="" alt="Coat of Arms" alt="Coat of arms">
+        <h1>Menu</h1>
+        <a href="/">
+           <button id="menu_button">Home</button>
+        </a>
+        <a href="new_work">
+           <button id="menu_button">New work</button>
+        </a>
+        <a href="downloads">
+           <button id="menu_button">Report Downloads</button>
+        </a>
+        <a href="inventory" >
+           <button id="menu_button">Manage Inventory</button>
+        </a>
+        <a href="manage_engineers" >
+           <button id="menu_button">Manage Engineers</button>
+        </a>
+        <a href="manage_departments" >
+               <button id="menu_button">Manage Departments</button>
+        </a>
+        <a href="logout" >
+               <button id="menu_button">Logout</button>
+        </a>
+    </div>
+{% endmacro %}
+
+
+{% macro equip_probs(equipment_problems, job) %}
+        <div class="work_problems">
+            {% if equipment_problems and not (equipment_problems|length == 1 and equipment_problems[0].job_id== job.job_id) %}
+                <p>Issues found with this piece of Equipment</p>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Job Type</td>
+                        <td>Porblem Type</td>
+                        <td>Problems</td>
+                        <td>Solution</td>
+                        <td>Preventative Work</td>
+                    </tr>
+                    {% for cur_job in equipment_problems %}
+                        {% if cur_job.job_id != job.job_id %}
+                            <tr>
+                                <td>{{ cur_job.job_type }}</td>
+                                <td>{{ cur_job.problem_type }}</td>
+                                <td>{{ cur_job.problems }}</td>
+                                <td>{{ cur_job.comments_solutions }}</td>
+                                <td>{{ cur_job.prevenative_work }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <p>No other issues found with this piece of equipment</p>
+            {% endif %}
+        </div>
+{% endmacro %}
+
+{% macro mod_problems(model_problems, job, item) %}
+    <div class="work_problems">
+                 {% if model_problems and not (model_problems|length == 1 and model_problems[0].job_id == job.job_id) %}
+                    <p>Issues found with this model</p>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Serial</td>
+                                <td>Problems</td>
+                                <td>Solution</td>
+                                <td>Status</td>
+                            </tr>
+                            {% for cur_job in model_problems %} {# TODO make it so current job doesnt appaer #}
+                                {% if cur_job.equipment_serial != item.serial_number %}
+                                    <tr>
+                                        <td>{{ cur_job.equipment_serial }}</td>
+                                        <td>{{ cur_job.problems }}</td>
+                                        <td>{{ cur_job.comments_solutions }}</td>
+                                        <td>
+                                            {% if cur_job.is_closed %}
+                                                <p>Closed</p>
+                                            {% else %}
+                                                <p>Open</p>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <p>No other issues found with this model</p>
+                    {% endif %}
+                </div>
+{% endmacro %}

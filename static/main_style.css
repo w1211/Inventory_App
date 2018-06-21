@@ -1,0 +1,191 @@
+
+
+body {
+    background-color: #000045;
+    font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+    font-size: 16px;
+}
+
+div {
+    background-color: white;
+    border-radius: 3px;
+    vertical-align: top;
+    padding: 10px;
+    overflow-x: hidden;
+}
+
+button {
+    margin: 2px;
+}
+
+table, tr, td {
+    border: solid 1px lightgray;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+
+td {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.main_content {
+    background-color: transparent;
+    display: inline-block;
+    width: 100%;
+    padding: 0px;
+}
+
+.main_menu {
+    width: 11%;
+    display: inline-block;
+    padding: 10px;
+    padding-top: 0px;
+    height:inherit;
+    margin: 10px;
+    margin-top: 0px;
+
+}
+
+.content {
+    vertical-align: top;
+    padding-top: 0px;
+    display: inline-block;
+    width: 80%;
+}
+
+#update_work_content {
+    background-color: transparent;
+    display: inline-block;
+    width: 100vm;
+}
+
+.update_work {
+    background-color: transparent;
+    display: inline-block;
+    width: 100%;
+}
+
+.work_form {
+    display: inline-block;
+    width:40%;
+    overflow: scroll;
+    height: 93vh;
+}
+
+
+.work_other {
+    background-color: transparent;
+    vertical-align: top;
+    padding-top: 0px;
+    display: inline-block;
+    width: 55%;
+    height: 95vh;
+}
+
+.work_problems {
+    margin-bottom: 10px;
+    max-height: 40%;
+    overflow-y: scroll;
+}
+
+.work_form_bt {
+    border-radius: 5px;
+    border: none;
+    height: 30px;
+    align-self: center;
+}
+
+.existing_departments {
+    align-items: center;
+    align-content: center;
+}
+
+.department {
+    display: inline-block;
+    width: 23%;
+    border: 1px lightgray solid;
+    margin: 0 auto;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.department_name {
+    text-align: center;
+}
+
+.department_table {
+    margin: 0;
+    padding: 0 ;
+    width:95%;
+}
+
+.login_text{
+    margin:5px;
+}
+
+.new_location {
+    width:20%;
+}
+
+.error {
+    color:red;
+}
+
+#submit_bt {
+    color:white;
+    background-color: #228b22;
+}
+
+#submit_bt:hover {
+    background-color: darkgreen;
+}
+
+#cancel_bt{
+    color:white;
+    background-color: crimson;
+}
+
+#cancel_bt:hover {
+    background-color: darkred;
+}
+
+#save_buttons_work{
+ vertical-align: bottom;
+}
+
+#open_work {
+    border:1px solid black;
+    border-collapse: collapse;
+}
+
+#login_page {
+    align-content: center;
+    text-align: center;
+}
+
+#menu_button {
+    width:100%;
+}
+
+#long_form {
+    width:80%;
+    height: 70px;
+    text-align: left;
+}
+
+#problem {
+    width:80%;
+    height: 70px;
+}
+#login{
+    text-align: center;
+    width:20%;
+    margin: 20px;
+    display:inline-block;
+}
+
+#history_header {
+    margin-bottom: 10px;
+}

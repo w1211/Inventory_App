@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/static/main_style.css" type="text/css">
+<head>
+    {% from 'macro.html' import main_menu %}
+    <meta charset="UTF-8">
+    <title>Inventory</title>
+</head>
+<body>
+    <div class="main_content">
+        {{ main_menu() }}
+        <div class="content">
+            <h1>Inventory</h1>
+            <div id="inventory_table">
+                <form method="post">
+                    <p style="display: inline-block;">Search for:</p>
+                    <input style="display: inline-block;"type="text" name="search">
+                    <p style="display: inline-block;"> in </p>
+                    <select style="display: inline-block;" name="field">
+                        {% for field, name in fields %}
+                            <option value="{{ field }}">{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button name="submit">Go</button>
+                </form>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h3>Serial</h3>
+                            </td>
+                            <td>
+                                <h3>Model</h3>
+                            </td>
+                            <td>
+                                <h3>Manufacturer</h3>
+                            </td>
+                            <td>
+                                <h3>Department</h3>
+                            </td>
+                            <td>
+                                <h3>Location</h3>
+                            </td>
+                            <td>
+                                <h3>Condition</h3>
+                            </td>
+                            <td>
+                                <h3>Has User Manual</h3>
+                            </td>
+                            <td>
+                                <h3>Has Service Manual</h3>
+                            </td>
+                            <td>
+                                <h3>Has Open Job</h3>
+                            </td>
+                            <td colspan="2">
+                                    <h3>Actions</h3>
+                            </td>
+                        </tr>
+                        {% for item in items %}
+                            <tr>
+                                <td>
+                                    <p>{{ item.serial_number }}</p>
+                                </td>
+                                <td>
+                                    <p>{{ item.model_number }}</p>
+                                </td>
+                                <td>
+                                    <p>{{ item.manufacturer }}</p>
+                                </td>
+                                <td>
+                                    <p>{{ depart_dict[item.department] }}</p>
+                                </td>
+                                <td>
+                                    <p>{{ location_dict[item.location] }}</p>
+                                </td>
+                                <td>
+                                    <p>{{ item.condition }}</p>
+                                </td>
+                                {%  set status = {1:"Yes", 0:"No", 2:"Unknown"} %}
+                                <td>
+                                    <p>{{ status[item.has_user_manual] }}</p>
+                                </td>
+                                <td>
+                                    <p>{{ status[item.has_service_manual] }}</p>
+                                </td>
+                                <td>
+                                    <p>{{ status[item.has_open_job] }}</p>
+                                </td>
+                                <td>
+                                    <a  href="/work_history?sn={{ item.serial_number }}" ><button type="button">Work History</button></a>
+                                </td>
+                                <td>
+                                    <a href="/new_device?sn={{ item.serial_number }}"><button>Edit</button></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

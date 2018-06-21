@@ -1,0 +1,16 @@
+ID,Equipment Serial,Engineer,Job Type,Open Date,Close Date,Problem type,Problems,Comments/Solutions,Preventative Work,Urgency,Total Cost
+1,1111,EWH 2017/18,Repair,2017-01-21,2018-02-21,Electric,Test,Test,Test,3,0E-10
+2,1234,EWH 2017/18,Repair,2018-02-21,2018-02-21,Power Supply,Problem,Problem,None,4,100540.0000000000
+3,1111,Patrick S,Repair,2018-02-05,2018-02-21,Plumbing,Test,Test,Test,1,1.0000000000
+4,1234,EWH 2017/18,Repair,2018-02-13,2018-02-22,Mechanical,Test,Test,Test,1,24.0000000000
+5,1234,EWH 2017/18,Other,2018-02-20,2018-02-22,Mechanical,Test,Test,Test,3,10000.0000000000
+6,1234,EWH 2017/18,Repair,2018-02-21,2018-02-22,Plumbing,Test,Test,Test,1,1000.0000000000
+7,1234,EWH 2017/18,Installation/Training,2018-02-12,2018-02-22,Plumbing,unni,ninin,unini,1,9898.0000000000
+8,1234,EWH 2017/18,Installation/Training,2018-02-06,2018-02-22,Plumbing,jnnkjn,jnknkn,kjnkjnkn,1,9009.0000000000
+9,1234,EWH 2017/18,Installation/Training,2018-02-06,2018-02-22,Plumbing,wddw,dww,wdw,1,111.0000000000
+10,1234,Patrick S,Preventative,2018-02-12,2018-02-22,Plumbing,dqdq,qwdqw,qwdqw,1,0E-10
+11,1111,EWH 2017/18,Preventative,2018-02-13,2018-02-22,Plumbing,wqd,dqwd,qdwd,1,3.0000000000
+12,1234,EWH 2017/18,Preventative,2018-02-13,2018-02-22,Plumbing,eeewew,fewfwe,fwef,1,1.0000000000
+13,1111,EWH 2017/18,Installation/Training,2018-02-06,2018-02-22,Mechanical,Download test 2,Power supply?,Blower,3,10001000.0000000000
+14,GEN-6,EWH 2017/18,Preventative,2018-02-21,None,Mechanical,'It doesn''t work','I''m going to try and make it work',None as of yet,3,12000.0000000000
+15,1111,EWH 2017/18,Preventative,2018-06-19,2018-06-21,Plumbing,21/06/18,21/06/18,21/06/18,3,0E-10

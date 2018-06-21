@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/static/main_style.css" type="text/css">
+{% from 'macro.html' import main_menu %}
+<head>
+    <meta charset="UTF-8">
+    <title>Downloads</title>
+</head>
+<body>
+    <div class="main_content">
+        {{ main_menu() }}
+        <div class="content">
+            <form method="post">
+                <h1>Download Reports</h1>
+                <p>A number of reports can be downloaded below. For each download, a number of filters can be</p>
+                <p>applied to help refine the results</p>
+                <div class="report_download">
+                   <h4>Work Summary Report</h4>
+                    <p style="display: inline-block">Download the work history with a summary of the job costs</p>
+                    <button style="display: inline-block; margin-left: 10px" name="summary" value="summary">Download</button>
+                </div>
+                <div id="report_download">
+                    <h4>Work Summary Cost Report</h4>
+                    <p style="display: inline-block">Download the work history with an item by item break down of the costs</p>
+                    <button style="display: inline-block; margin-left: 10px" name="cost" value="cost">Download</button>
+                </div>
+                <div id="report_download">
+                    <h4>Inventory</h4>
+                    <p style="display: inline-block">Download the current inventory stored in the system</p>
+                    <button style="display: inline-block; margin-left: 10px" name="inventory" value="inventory">Download</button>
+                </div>
+                <div id="report_download">
+                    <h4>Generate Serials</h4>
+                    <p>Download a list of serial numbers that can be used on devices that don't have one</p>
+                    <p>It is very important you mark the serial on the device if you use it in the database. Also only use a serial from this list</p>
+                    <button style="display: inline-block; margin-left: 10px" name="serials" value="serials">Download</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+{% from 'macro.html' import equip_probs, mod_problems %}
+<head>
+    <meta charset="UTF-8">
+    <title>Work History</title>
+    <link rel="stylesheet" href="/static/main_style.css" type="text/css">
+</head>
+<body>
+    <div class="main_content">
+        <div id="history_header">
+            <a href="/inventory">Go Back</a>
+            <h1>Work History for {{ item.serial_number }}</h1>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h3>Serial</h3>
+                            </td>
+                            <td>
+                                <h3>Model</h3>
+                            </td>
+                            <td>
+                                <h3>Manufacturer</h3>
+                            </td>
+                             <td>
+                                <h3>Equipment Type</h3>
+                            </td>
+                            <td>
+                                <h3>Department</h3>
+                            </td>
+                            <td>
+                                <h3>Location</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>{{ item.serial_number }}</p>
+                            </td>
+                            <td>
+                                <p>{{ item.model_number }}</p>
+                            </td>
+                            <td>
+                                <p>{{ item.manufacturer }}</p>
+                            </td>
+                            <td>
+                                <p>{{ item.equipment_type }}</p>
+                            </td>
+                            <td>
+                                <p>{{ data_man.get_department_name(item.department) }}</p>
+                            </td>
+                            <td>
+                                <p>{{ data_man.get_location_name(item.location) }}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+        {{ equip_probs(equipment_problems, job) }}
+        {{ mod_problems(model_problems, job, item) }}
+    </div>
+</body>
+</html>

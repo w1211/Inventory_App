@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link  rel="stylesheet" href="/static/main_style.css" type="text/css">
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <div class="main_content"  id="login_page">
+        <div class="content">
+            <div id="Welcome message">
+                <h1>Welcome to Mbarara Biomed Engineering Work History</h1>
+                <p>Please log in bellow</p>
+            </div>
+        </div>
+        <div id="login">
+            <form method="post">
+                <h2>Login</h2>
+                <p class="login_text">Username</p>
+                <input type="text" name="username">
+                <p class="login_text">Password</p>
+                <input type="password" name="password">
+                <br>
+                {% if error %}
+                <p style="color: red">{{ error }}</p>
+                {% endif %}
+                <button type="submit" style="margin:5px; width:30%" class="work_form_bt" id="submit_bt" name="submit">Log in</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

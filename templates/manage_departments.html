@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+{% from 'macro.html' import main_menu %}
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Departments</title>
+    <link rel="stylesheet" href="/static/main_style.css" type="text/css">
+</head>
+<body>
+    <div class="main_content">
+        {{ main_menu() }}
+        <div class="content">
+            <form method="post">
+            <div>
+                <h1>Manage Departments</h1>
+                <p>Here you can add and remove hospital departments from the database, as well as adding or removing
+                lcoations within departments</p>
+                {% if error %}
+                    <br>
+                    <h4 class="error" style="color:red" >Error: {{ error }}</h4>
+                {% endif %}
+            </div>
+            <div>
+                <h2 style="margin: 2px">Add Department</h2>
+                <div class="Text_UserIn">
+                    <p style="margin: 4px; display: inline-block">Department name:</p>
+                    <input style="display: inline-block" type="text" name="dept_name">
+                    <button style="display: inline-block" name="submit" value="new_department">Add</button>
+                </div>
+            </div>
+            <div class="existing_departments">
+                <h2>Manage Existing Departments and Locations</h2>
+                <p>Add or remove locations one at a time</p>
+                {% for dept in departments %}
+                <div class="department">
+                    <h4 class="department_name" style="display: inline-block">{{ dept.get_name() }}</h4>
+                    <button style="display:inline-block; "
+                            name="remove_department"
+                            value="{{ dept.get_id() }}"
+                            onclick="return confirm('Do you really want to remove the department \'{{ dept.get_name() }}\'? This cannot be undone');"
+                    >Remove</button>
+                    <table class="department_table">
+
+                        {% for loc in data_man.get_locations(dept.get_id(), False) %}
+                            <tr  name="locations" id="{{ loc.get_id() }}">
+                                <td style="width: 60%">{{ loc.get_name() }}</td>
+                                <td><button class="remove_location"
+                                            name="remove_location"
+                                            value="{{ loc.get_id() }}"
+                                            style="display: inline-block;"
+                                            onclick="return confirm('Do you really want to remove the location \'{{ loc.get_name() }}\'? This cannot be undone');"
+                                >Delete</button></td>
+                            </tr>
+                        {% endfor %}
+
+                        <tr class="new_locations">
+                            <td>
+                                <input type="text" name="{{ dept.get_id() }}" placeholder="Enter a new location">
+                            </td>
+                            <td>
+                                <button class="add_location" name="submit" value="{{ dept.get_id() }}">Add</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% endfor %}
+            </div>
+        </form>
+        </div>
+        </div>
+    </div>
+</body>
+</html>
